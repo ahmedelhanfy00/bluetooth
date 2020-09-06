@@ -1,0 +1,75 @@
+#include<SoftwareSerial.h>
+#include<LiquidCrystal.h>
+SoftwareSerial bluetooth(5,4);
+LiquidCrystal lcd(13,12,11,10,9,8);
+int motor=7;
+int lamp=6;
+char bluetoothdata;
+void setup()
+{
+ bluetooth.begin(9600);
+ lcd.begin(16,2);
+ pinMode(motor,OUTPUT);
+ pinMode(lamp,OUTPUT);
+ lcd.print("!!Welcome!!");
+ lcd.setCursor(0,1);
+ lcd.print("Team dofa 52 !!!");
+ delay(3000);
+ lcd.clear();
+ lcd.setCursor(0,1);
+}
+void loop()
+{
+   
+  if(bluetooth.available())
+    {
+      bluetoothdata=bluetooth.read();
+       if(bluetoothdata=='1')
+        {
+          digitalWrite(motor,HIGH);
+          bluetooth.println("Motor is ON");
+          lcd.clear();
+          lcd.print("Hello ");
+          lcd.setCursor(0,1);
+          lcd.print("Motor is ON");
+        }
+       else if(bluetoothdata=='2')
+        {
+          digitalWrite(lamp,HIGH);
+          bluetooth.println("Lamp is ON");
+          lcd.clear();
+          lcd.print("Hello ");
+          lcd.setCursor(0,1);
+          lcd.print("Lamp is ON");
+        }
+       else if(bluetoothdata=='3')
+        {
+          digitalWrite(motor,LOW);
+          bluetooth.println("Motor is OFF");
+          lcd.clear();
+          lcd.print("Hello");
+          lcd.setCursor(0,1);
+          lcd.print("Motor is OFF");
+        }
+       else if(bluetoothdata=='4')
+        {
+          digitalWrite(lamp,LOW);
+          bluetooth.println("lamp is OFF");
+          lcd.clear();
+          lcd.print("Hello");
+          lcd.setCursor(0,1);
+          lcd.print("Lamp is OFF");
+        }
+       else if(bluetoothdata=='0')
+        {
+          digitalWrite(motor,LOW);
+          digitalWrite(lamp,LOW);
+          bluetooth.println("Motor is ON");
+          lcd.clear();
+          lcd.print("Lamp is OFF");
+          lcd.setCursor(0,1);
+          lcd.print("Motor is OFF");
+        }
+        delay(1000);
+    }    
+}
